@@ -9,16 +9,17 @@ import matplotlib.pyplot as plt
 from scipy.special import erfc
 
 
-pxse = 125
+#params:
+pxse = 120
 pys = 78
 pye = 178
 ppix = 100
-phwidth = 1
+phwidth = 0
 mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'Result_IMG_0276.tif'
-def sigmoid(x, x0, k, L, y0):
-     y = y0 + L/ (1 + np.exp(-k*(x-x0)))
+tif_file = 'Result_IMG_0265.tif'
+def sigmoid(x, x0, k, L):
+     y = 80 + L/ (1 + np.exp(-k*(x-x0)))
      return y
 
 def erf_sigmoid(x, x0, k, L):
@@ -50,19 +51,21 @@ for framen in range(0, frame_nmb, 1):
     profile = lin_profile(pxse, pys, pye, phwidth)
     ydata = np.array(profile[:ppix])
     try:
-        popt, pcov = curve_fit(sigmoid, xdata, ydata,
-                               p0=[1, 1, ydata.max(), ydata.min()])
+        maxim = ydata.max()
+        minim = ydata.min()
+        indmin = ydata.tolist().index(minim)
+        popt, pcov = curve_fit(sigmoid, xdata[indmin:], ydata[indmin:], p0=[1, 1, maxim])
         y = sigmoid(xdata, *popt)
         if popt[0] > 0:
             params.append({'x0' : popt[0], 'k' : popt[1],
-                      'L' : popt[2], 'y0' : popt[3]})
+                      'L' : popt[2]})
             times.append(framen*12./60.)
     except RuntimeError:
         print("unable to fit at frame %d"%framen)
 half_values=[(x['x0']*mm)**2 for x in params]
 plt.plot(times, half_values)
 plt.xlabel('time (min)')
-plt.ylabel('distance(mm^1/2)')
+plt.ylabel('distance(mm^2)')
 plt.show()
 f = open(tif_file.replace('.tif', '.csv'), 'w')
 f.write('#time(min)\tdistance(mm)\n')

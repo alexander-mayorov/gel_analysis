@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from scipy.special import erf
 
 #params:
-pxse = 125
-pys = 78
-pye = 178
+pxse = 197
+pys = 110
+pye = 210
 ppix = 100
 phwidth = 1
 mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'Result_IMG_0265.tif'
+tif_file = 'Result_IMG_0282.tif'
 
 colors = ['#1f77b4',
           '#ff7f0e',
@@ -65,8 +65,10 @@ for framen in range(0, frame_nmb, step):
     profile = lin_profile(pxse, pys, pye, phwidth)
     ydata = np.array(profile[:ppix])
     try:
-        popt, pcov = curve_fit(sigmoid, xdata, ydata,
-                   p0=[1, 1, ydata.max(), ydata.min()])
+        maxim = ydata.max()
+        minim = ydata.min()
+        indmin = ydata.tolist().index(minim)
+        popt, pcov = curve_fit(sigmoid, xdata[indmin:], ydata[indmin:], p0=[1, 1, maxim, minim])
         y = sigmoid(xdata, *popt)
         params.append({'x0' : popt[0], 'k' : popt[1], 'L' : popt[2]})
         time = framen*12/60
