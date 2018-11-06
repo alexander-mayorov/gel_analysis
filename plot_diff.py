@@ -10,16 +10,17 @@ from scipy.special import erfc
 
 
 #params:
-pxse = 120
-pys = 78
-pye = 178
-ppix = 100
+pxse = 133
+pys = 42
+pye = 162
+ppix = 120
 phwidth = 0
 mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'Result_IMG_0265.tif'
+tif_file = 'IMG_0282_1.tif'
+
 def sigmoid(x, x0, k, L):
-     y = 80 + L/ (1 + np.exp(-k*(x-x0)))
+     y = 15 + L/ (1 + np.exp(-k*(x-x0)))
      return y
 
 def erf_sigmoid(x, x0, k, L):

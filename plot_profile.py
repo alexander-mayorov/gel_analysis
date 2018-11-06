@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from scipy.special import erf
 
 #params:
-pxse = 197
-pys = 110
-pye = 210
-ppix = 100
-phwidth = 1
+pxse = 133
+pys = 42
+pye = 162
+ppix = 120
+phwidth = 0
 mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'Result_IMG_0282.tif'
+tif_file = 'IMG_0282_1.tif'
 
 colors = ['#1f77b4',
           '#ff7f0e',
@@ -31,7 +31,7 @@ colors = ['#1f77b4',
           '#1a55FF']
 
 def sigmoid(x, x0, k, L, y0):
-     y = y0 + L/ (1 + np.exp(-k*(x-x0)))
+     y = 20 + L/ (1 + np.exp(-k*(x-x0)))
      return y
 
 def erf_sigmoid(x, x0, k, L):
@@ -45,7 +45,7 @@ def lin_profile(xse=92, ys=56, ye=156, hwidth=2):
         for i in range(ys, ye, 1):
             for j in range(xse-hwidth, xse+hwidth, 1):
                 hor.append(image1.getpixel((j, i)))
-                profile.append(np.average(hor))
+            profile.append(np.average(hor))
     else:
         for i in range(ys, ye, 1):
             profile.append(image1.getpixel((xse, i)))
