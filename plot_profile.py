@@ -9,15 +9,14 @@ import matplotlib.pyplot as plt
 from scipy.special import erf
 
 #params:
-pxse = 133
-pys = 42
-pye = 162
-ppix = 120
+pxse = 100
+pys = 69
+pye = 139
+ppix = 70
 phwidth = 0
 mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'IMG_0282_1.tif'
-
+tif_file = 'IMG_0303.tif'
 colors = ['#1f77b4',
           '#ff7f0e',
           '#2ca02c',

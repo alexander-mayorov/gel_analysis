@@ -10,17 +10,18 @@ from scipy.special import erfc
 
 
 #params:
-pxse = 133
-pys = 42
-pye = 162
-ppix = 120
+pxse = 100
+pys = 69
+pye = 139
+ppix = 70
 phwidth = 0
 mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'IMG_0282_1.tif'
+tif_file = 'IMG_0303.tif'
 
-def sigmoid(x, x0, k, L):
-     y = 15 + L/ (1 + np.exp(-k*(x-x0)))
+
+def sigmoid(x, x0, k, L, y0):
+     y = 20 + L/ (1 + np.exp(-k*(x-x0)))
      return y
 
 def erf_sigmoid(x, x0, k, L):
@@ -55,7 +56,7 @@ for framen in range(0, frame_nmb, 1):
         maxim = ydata.max()
         minim = ydata.min()
         indmin = ydata.tolist().index(minim)
-        popt, pcov = curve_fit(sigmoid, xdata[indmin:], ydata[indmin:], p0=[1, 1, maxim])
+        popt, pcov = curve_fit(sigmoid, xdata[indmin:], ydata[indmin:], p0=[1, 1, maxim, minim])
         y = sigmoid(xdata, *popt)
         if popt[0] > 0:
             params.append({'x0' : popt[0], 'k' : popt[1],

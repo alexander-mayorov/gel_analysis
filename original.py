@@ -8,10 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #params:
-pxse = 108
-pys = 51
-pye = 117
-ppix = 66
+pxse = 128
+pys = 54
+pye = 111
+ppix = 57
 phwidth = 1
 mm = 22./174
 step = 20
