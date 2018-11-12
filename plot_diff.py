@@ -10,22 +10,21 @@ from scipy.special import erfc
 
 
 #params:
-pxse = 100
-pys = 69
-pye = 139
-ppix = 70
+pxse = 145
+pys = 84
+pye = 140
+ppix = 56
 phwidth = 0
 mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'IMG_0303.tif'
-
+tif_file = 'IMG_0276-2.tif'
 
 def sigmoid(x, x0, k, L, y0):
-     y = 20 + L/ (1 + np.exp(-k*(x-x0)))
+     y = y0 + L/ (1 + np.exp(-k*(x-x0)))
      return y
 
-def erf_sigmoid(x, x0, k, L):
-    y = x0 + k*erf((x)/L)
+def erf_sigmoid(x, f, L, y0):
+    y = y0-f*L*np.exp(-x**2/L**2)/np.sqrt(np.pi)+f*x*erfc(x/L)
     return y
 
 def lin_profile(xse=92, ys=56, ye=156, hwidth=2):
@@ -50,6 +49,7 @@ image1.load()
 frame_nmb = image1.n_frames
 for framen in range(0, frame_nmb, 1):
     image1.seek(framen)
+    print(framen)
     profile = lin_profile(pxse, pys, pye, phwidth)
     ydata = np.array(profile[:ppix])
     try:
@@ -64,7 +64,7 @@ for framen in range(0, frame_nmb, 1):
             times.append(framen*12./60.)
     except RuntimeError:
         print("unable to fit at frame %d"%framen)
-half_values=[(x['x0']*mm)**2 for x in params]
+half_values=[x['x0'] for x in params]
 plt.plot(times, half_values)
 plt.xlabel('time (min)')
 plt.ylabel('distance(mm^2)')

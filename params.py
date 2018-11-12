@@ -26,12 +26,14 @@ mm = 22./174
 path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
 tif_file = 'IMG_0275.tif'
 #IMG_0282
-pxse = 197
-pys = 110
-pye = 210
-ppix = 100
-phwidth = 1
+pxse = 134
+pys = 54
+pye = 134
+ppix = 80
+phwidth = 0
 mm = 22./174
+path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
+tif_file = 'IMG_0282.tif'
 #IMG_0293
 pxse = 152
 pys = 89

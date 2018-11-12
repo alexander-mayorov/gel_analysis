@@ -6,17 +6,17 @@ from scipy.optimize import curve_fit
 import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.special import erf
+from scipy.special import erfc
 
 #params:
-pxse = 100
-pys = 69
-pye = 139
-ppix = 70
+pxse = 148
+pys = 87
+pye = 143
+ppix = 56
 phwidth = 0
 mm = 22./174
-path = '/Users/aleksandrmaiorov/Desktop/methylene_blue'
-tif_file = 'IMG_0303.tif'
+path = '/Users/aleksandrmaiorov/Desktop/methylene_blue/Flat_images'
+tif_file = 'Result_IMG_0276.tif'
 colors = ['#1f77b4',
           '#ff7f0e',
           '#2ca02c',
@@ -30,11 +30,11 @@ colors = ['#1f77b4',
           '#1a55FF']
 
 def sigmoid(x, x0, k, L, y0):
-     y = 20 + L/ (1 + np.exp(-k*(x-x0)))
+     y = y0 + L/ (1 + np.exp(-k*(x-x0)))
      return y
 
-def erf_sigmoid(x, x0, k, L):
-    y = x0 + k*erf((x)/L)
+def erf_sigmoid(x, f, L, y0):
+    y = f*x*erfc((x+y0)/L)
     return y
 
 def lin_profile(xse=92, ys=56, ye=156, hwidth=2):
@@ -67,9 +67,12 @@ for framen in range(0, frame_nmb, step):
         maxim = ydata.max()
         minim = ydata.min()
         indmin = ydata.tolist().index(minim)
-        popt, pcov = curve_fit(sigmoid, xdata[indmin:], ydata[indmin:], p0=[1, 1, maxim, minim])
-        y = sigmoid(xdata, *popt)
-        params.append({'x0' : popt[0], 'k' : popt[1], 'L' : popt[2]})
+#        popt, pcov = curve_fit(sigmoid, xdata[indmin:], ydata[indmin:], p0=[1, 1, maxim, minim])
+        popt, pcov = curve_fit(erf_sigmoid, xdata[indmin:], ydata[indmin:])
+#        y = sigmoid(xdata, *popt)
+        y = erf_sigmoid(xdata, *popt)
+#        params.append({'x0' : popt[0], 'k' : popt[1], 'L' : popt[2]})
+        params.append({'f' : popt[0], 'L' : popt[1], 'y0' : popt[2]})
         time = framen*12/60
         pylab.plot(xdata, ydata, '.', color = colors[i], label='%.1f' % time)
         pylab.plot(xdata,y, color = colors[i])
